@@ -56,7 +56,7 @@ class Database:
 
         database = connect(**config)
         cursor = database.cursor()
-        cursor.execute(f"CREATE DATABASE {self.DB_NAME} DEFAULT CHARACTER SET 'uft8mb4'")
+        cursor.execute(f"CREATE DATABASE {self.DB_NAME} DEFAULT CHARACTER SET 'uft8'")
         cursor.close()
         database.close()
 
