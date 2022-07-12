@@ -6,7 +6,8 @@
   },
   "LINKEDIN": {
     "USER": "",
-    "PASS": ""
+    "PASS": "",
+    "URL":  ""
   },
   "TG": {
     "API_ID": 0,
