@@ -42,7 +42,7 @@ class LinkedinAlreadyLinked(Text):
 class LinkedinLinked(Text):
 
     en = ("✅ Your Linkedin account has been added successfully.\n\n"
-          "To download media, simply \"Share\" desired posts to my Linkedin Account")
+          "To download media, simply \"Share\" desired posts to my Linkedin account")
 
     fa = ("✅ اکانت لینکدین شما با موفقیت همگام سازی شد\n\n"
           "برای دانلود مدیا، تنها کافی است پست مورد نظرتان را برای اکانت لینکدین من \"Share\" کنید")
