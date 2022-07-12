@@ -1,0 +1,16 @@
+{
+  "DB": {
+    "USER": "",
+    "PASS": "",
+    "HOST": ""
+  },
+  "LINKEDIN": {
+    "USER": "",
+    "PASS": ""
+  },
+  "TG": {
+    "API_ID": 0,
+    "API_HASH": "",
+    "TOKEN": ""
+  }
+}
