@@ -55,6 +55,11 @@ async def authenticate(bot: TelegramClient, code: str, linkedin_id: str):
             if user[0]:
                 return
 
+        # if the LinkedIn account is already linked to another telegram account, unlink it
+        if user := db.fetch(columns='telegram_id', linkedin_id=linkedin_id, size=1):
+            if user[0]:
+                db.update({'linkedin_id': None}, {'telegram_id': user[0]})
+
     redis = Redis()
     saved_code = redis.server.get(telegram_id)
     if saved_code is not None:
