@@ -22,8 +22,8 @@ import datetime
 tz = datetime.timezone.utc
 bot = get_bot()
 logging.basicConfig(
-    # filename='user_panel_log.log',
-    # filemode='a',
+    filename='log.log',
+    filemode='a',
     format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
     datefmt='%Y-%m-%d - %H:%M:%S',
     level=logging.WARNING)
