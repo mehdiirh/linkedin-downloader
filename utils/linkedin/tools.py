@@ -24,7 +24,9 @@ async def extract_media(bot: TelegramClient, event: EventDetails):
 
     caption = MediaCaption.get(lang).replace('%author%', event.author)
 
-    message = await bot.send_message(telegram_id, f"{caption} \n\n {event.text[:4000]} \n\n 👇👇👇👇")
+    message = await bot.send_message(telegram_id, f"{caption}"
+                                                  f"_____________\n\n"
+                                                  f"{event.text[:4000]} \n\n 👇👇👇👇")
 
     if images := event.media.images:
         [await bot.send_file(telegram_id, i, caption=caption, reply_to=message) for i in images]
