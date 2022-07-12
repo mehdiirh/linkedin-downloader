@@ -120,6 +120,13 @@ class Database:
 
         _filters = []
         for key, value in filters.items():
+
+            if value is None:
+                value = 'NULL'
+
+            if isinstance(value, (list, tuple)):
+                value = list(map(lambda x: 'NULL' if x is None else x, value))
+
             if str(key).endswith('__in'):
                 key = str(key).replace('__in', '')
                 value = tuple(value)
@@ -128,10 +135,13 @@ class Database:
 
             if str(key).endswith('__contains'):
                 key = str(key).replace('__contains', '')
-                _filters.append(f"{key} CONTAINS '{value}'")
+                _filters.append(f'{key} LIKE "%{value}%"')
                 continue
 
-            _filters.append(f'{key}="{value}"')
+            if value == 'NULL':
+                _filters.append(f'{key}=NULL')
+            else:
+                _filters.append(f'{key}="{value}"')
 
         return f' {condition} '.join(_filters)
 
@@ -199,7 +209,7 @@ class User:
             (bool): True
         """
 
-        values = ' '.join([f"{key}='{value}'" for key, value in values.items()])
+        values = self.database.create_filters(condition=',', **values)
         filters = self.database.create_filters(condition=filter_condition, **filters)
 
         return self.database.execute(
