@@ -50,5 +50,7 @@ class LinkedinLinked(Text):
 
 class MediaCaption(Text):
 
-    en = "Author: %author%"
-    fa = "دریافت شده از: %author%"
+    en = ("Author: %author%\n"
+          "________________")
+    fa = ("دریافت شده از: %author%\n"
+          "________________")
