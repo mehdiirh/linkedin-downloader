@@ -10,7 +10,7 @@ class LinkYourLinkedIn(Text):
 
     en = ("🖇 To use this bot, I need to know you on Linkedin.\n"
           "👉 To do so, please copy the code below and send it to me on Linkedin.\n\n"
-          "Your Code is:\n"
+          "Your code is:\n"
           "`%code%`\n\n"
           "⏳ This code is valid for 5 minutes.\n\n"
           "🔅 Please consider that if you don't have Linkedin premium, you need to *connect* with me first. "

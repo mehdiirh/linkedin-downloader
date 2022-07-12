@@ -51,7 +51,7 @@ async def validate_user(message: Message):
 async def set_language(message: Message):
 
     await message.respond(
-        f'Please Select your preferred language 👇:',
+        f'Please select your preferred language 👇:',
         buttons=keyboards.SET_LANG
     )
 
@@ -67,8 +67,8 @@ async def check_language(message: Message):
         if not db.language(sender.id):
             await message.respond(
                 f'Hello {sender.first_name} !\n'
-                f'Welcome to Linkedin Downloader Bot.\n\n'
-                f'Please Select your preferred language 👇:',
+                f'Welcome to Downloadin Bot.\n\n'
+                f'Please select your preferred language 👇:',
 
                 buttons=keyboards.SET_LANG
             )
