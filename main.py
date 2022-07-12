@@ -99,7 +99,7 @@ async def link_linkedin(message: Message):
 
             if not code:
                 code = generate_unique_id(24)
-                redis.server.set(str(sender.id), code, ex=300)
+                redis.server.set(str(sender.id), code, ex=1800)
             else:
                 code = code.decode('utf-8')
 
