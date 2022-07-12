@@ -23,9 +23,9 @@ SET_LANG_CONVERSATION = [
 class OpenMyLinkedin(Text):
 
     en = [
-        [_u('Open My Linkedin', linkedin_url)]
+        [_u('✅ Open My Linkedin', linkedin_url)]
     ]
 
     fa = [
-        [_u('بازکردن لینکدین من', linkedin_url)]
+        [_u('✅ بازکردن لینکدین من', linkedin_url)]
     ]

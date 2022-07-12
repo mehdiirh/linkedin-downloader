@@ -8,17 +8,17 @@ class LanguageIsSet(Text):
 
 class LinkYourLinkedIn(Text):
 
-    en = ("To use this bot, I need to know you on Linkedin.\n"
-          "To do so, please copy the code below and send it to me on Linkedin.\n\n"
+    en = ("🖇 To use this bot, I need to know you on Linkedin.\n"
+          "👉 To do so, please copy the code below and send it to me on Linkedin.\n\n"
           "Your Code is:\n"
           "`%code%`\n\n"
-          "This code is valid for 5 minutes.")
+          "⏳ This code is valid for 5 minutes.")
 
-    fa = ("برای استفاده از ربات، باید لینکدین خود را با اکانت تلگرامتان همگام سازی کنید.\n"
-          "بدین منظور لطفا کد زیر را کپی کرده و برای من در لینکدین ارسال کنید\n\n"
-          "کد شما:\n"
+    fa = ("🖇 برای استفاده از ربات، باید لینکدین خود را با اکانت تلگرامتان همگام سازی کنید.\n"
+          "👈 بدین منظور لطفا کد زیر را کپی کرده و برای من در لینکدین ارسال کنید\n\n"
+          "🔹 کد شما:\n"
           "`%code%`\n\n"
-          "اعتبار این کد 5 دقیقه است")
+          "⏳ اعتبار این کد 5 دقیقه است")
 
 
 class LinkedinLinked(Text):
