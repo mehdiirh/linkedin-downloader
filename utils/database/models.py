@@ -23,10 +23,10 @@ class Database:
 
     def open(self):
         """
-        Open connection with database
+        Open database connection or create it if it doesn't exist
 
         Returns:
-            (Database): database object
+            (Database): self instance
         """
 
         for _ in range(3):
@@ -51,7 +51,7 @@ class Database:
 
     def create_db(self):
         """
-        Create bots database
+        Create database if it doesn't exist
         """
 
         database = connect(**config)
@@ -142,6 +142,16 @@ class User:
         self.database = Database().open()
 
     def create(self, telegram_id):
+        """
+        Create a new user
+
+        Args:
+            telegram_id: New user telegram ID
+
+        Returns:
+            (bool): True
+        """
+
         self.database.execute(
             "INSERT INTO users "
             "(telegram_id, date_joined) VALUES "
@@ -154,6 +164,19 @@ class User:
         return True
 
     def fetch(self, size=None, columns=None, condition='AND', **filters):
+        """
+        Fetch user from database by filters and columns
+
+        Args:
+            size: item count to return
+            columns: columns to return
+            condition: fill between filters with this phrase
+            **filters: filters to filter by
+
+        Returns:
+            (list): a list of results
+        """
+
         if columns is None:
             columns = '*'
 
@@ -164,6 +187,17 @@ class User:
         return self.database.fetch(f"SELECT {columns} FROM users WHERE {filters}", size=size)
 
     def update(self, values: dict, filters: dict, filter_condition='AND'):
+        """
+        Update user data in database
+
+        Args:
+            values: values to update
+            filters: filters to filter by
+            filter_condition: fill between filters with this phrase
+
+        Returns:
+            (bool): True
+        """
 
         values = ' '.join([f"{key}='{value}'" for key, value in values.items()])
         filters = self.database.create_filters(condition=filter_condition, **filters)
@@ -174,6 +208,16 @@ class User:
         )
 
     def language(self, telegram_id):
+        """
+        Get user selected language
+
+        Args:
+            telegram_id: user telegram ID
+
+        Returns:
+            (str): user language code or None if not selected
+        """
+
         lang = self.database.fetch(
             f"SELECT language FROM users WHERE telegram_id={telegram_id}", size=1
         )

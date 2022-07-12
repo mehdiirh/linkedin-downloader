@@ -4,6 +4,12 @@ import string
 
 
 def now():
+    """
+    return current datetime as string in format '%Y-%m-%d %H:%M:%S' (UTC)
+    Returns:
+        str: current datetime
+    """
+
     return datetime.datetime.now(tz=datetime.timezone.utc).strftime("%Y-%m-%d %H:%M:%S")
 
 

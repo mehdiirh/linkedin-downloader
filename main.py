@@ -127,4 +127,5 @@ async def callback_handler(call: CallbackQuery):
             await message.respond(texts.LanguageIsSet.get(value))
 
 
+# run the LinkedIn bot
 bot.loop.run_until_complete(linkedin_bot.listen(bot))

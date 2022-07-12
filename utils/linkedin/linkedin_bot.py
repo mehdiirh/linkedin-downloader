@@ -23,6 +23,13 @@ logging.getLogger().setLevel(logging.WARNING)
 
 
 async def listen(bot):
+    """
+    Listen to events from the LinkedIn direct messages
+
+    Args:
+        bot (telethon.TelegramClient): Telegram client
+    """
+
     print('Start listening to linkedin messages...')
 
     messaging = LinkedInMessaging()

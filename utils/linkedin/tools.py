@@ -7,6 +7,14 @@ from telethon.sync import TelegramClient
 
 
 async def extract_media(bot: TelegramClient, event: EventDetails):
+    """
+    Extract media from the event and send it to the user as a message
+
+    Args:
+        bot (TelegramClient): Telegram client
+        event (EventDetails): Event details
+    """
+
     with User() as db:
         if not (user := db.fetch(columns=['language', 'telegram_id'], linkedin_id=event.sender, size=1)):
             return
@@ -28,7 +36,16 @@ async def extract_media(bot: TelegramClient, event: EventDetails):
         [await bot.send_file(telegram_id, i, caption=caption) for i in documents]
 
 
-async def authenticate(bot: TelegramClient, code, linkedin_id):
+async def authenticate(bot: TelegramClient, code: str, linkedin_id: str):
+    """
+    Authenticate the user with the given linkedin_id and code and sync it with their telegram account
+
+    Args:
+        bot (TelegramClient): Telegram client
+        code (str): Code received from the user
+        linkedin_id (str): LinkedIn ID of the user
+    """
+
     telegram_id, code = code.split(':')
 
     with User() as db:
