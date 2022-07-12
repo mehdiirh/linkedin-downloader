@@ -29,6 +29,16 @@ class LinkYourLinkedIn(Text):
           )
 
 
+class LinkedinAlreadyLinked(Text):
+
+    en = ("🖇 You already linked your Linkedin account.\n"
+          "🔅 To download images, documents and videos, *share* desired posts with me on Linkedin.\n")
+
+    fa = ("🖇 اکانت لینکدین شما همگام سازی شده است.\n"
+          "🔅 برای دریافت تصاویر، فایل ها و ویدیوهای موجود در پست ها، پست موردنظر خود"
+          " را با من در لینکدین *share* کنید.\n")
+
+
 class LinkedinLinked(Text):
 
     en = ("✅ Your Linkedin account has been added successfully.\n\n"

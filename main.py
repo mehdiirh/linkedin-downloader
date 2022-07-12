@@ -111,6 +111,13 @@ async def link_linkedin(message: Message):
             )
             raise events.StopPropagation
 
+        else:
+            await message.respond(
+                texts.LinkedinAlreadyLinked().get(lang),
+                buttons=keyboards.OpenMyLinkedin().get(lang)
+            )
+            raise events.StopPropagation
+
 
 @bot.on(events.CallbackQuery())
 async def callback_handler(call: CallbackQuery):
