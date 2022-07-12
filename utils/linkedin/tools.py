@@ -24,16 +24,16 @@ async def extract_media(bot: TelegramClient, event: EventDetails):
 
     caption = MediaCaption.get(lang).replace('%author%', event.author)
 
-    await bot.send_message(telegram_id, f"{caption} \n\n {event.text[:4000]} \n\n 👇👇👇👇")
+    message = await bot.send_message(telegram_id, f"{caption} \n\n {event.text[:4000]} \n\n 👇👇👇👇")
 
     if images := event.media.images:
-        [await bot.send_file(telegram_id, i, caption=caption) for i in images]
+        [await bot.send_file(telegram_id, i, caption=caption, reply_to=message) for i in images]
 
     if videos := event.media.videos:
-        [await bot.send_file(telegram_id, i.url, caption=caption) for i in videos]
+        [await bot.send_file(telegram_id, i.url, caption=caption, reply_to=message) for i in videos]
 
     if documents := event.media.documents:
-        [await bot.send_file(telegram_id, i, caption=caption) for i in documents]
+        [await bot.send_file(telegram_id, i, caption=caption, reply_to=message) for i in documents]
 
 
 async def authenticate(bot: TelegramClient, code: str, linkedin_id: str):
