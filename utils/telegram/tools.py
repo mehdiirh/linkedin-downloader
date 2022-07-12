@@ -1,6 +1,3 @@
-from utils.event_objects import EventDetails
-from utils.database.models import Database, User
-
 
 class Text:
 
