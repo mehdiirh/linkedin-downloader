@@ -1,4 +1,5 @@
 linkedin-messaging @ git+https://github.com/mehdiirh/linkedin-messaging-api.git
+linkedin-api
 telethon
 mysql-connector-python
 redis
