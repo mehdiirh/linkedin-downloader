@@ -31,9 +31,7 @@ class User(Model):
             (str): user language code or None if not selected
         """
 
-        lang = self.database.fetch(
-            f"SELECT language FROM users WHERE telegram_id={telegram_id}", size=1
-        )
+        lang = self.fetch(columns='language', telegram_id=telegram_id, size=1)
         if lang:
             return lang[0]
 
