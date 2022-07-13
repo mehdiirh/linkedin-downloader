@@ -35,8 +35,27 @@ class User(Model):
         if lang:
             return lang[0]
 
-    def __enter__(self):
-        return self
 
-    def __exit__(self, exc_type, exc_val, exc_tb):
-        self.database.close()
+class Media(Model):
+
+    table_name = 'media'
+
+    def _create_table(self):
+        self.database.execute(
+            f"CREATE TABLE IF NOT EXISTS {self.table_name} "
+            "("
+            "   id BIGINT NOT NULL AUTO_INCREMENT,"
+            "   user_tg_id INT(16) NOT NULL,"
+            "   media_type VARCHAR(16) NOT NULL,"
+            "   media_count INT NOT NULL,"
+            "   create_time DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,"
+            "   PRIMARY KEY (id),"
+            "   INDEX (user_tg_id),"
+            "   INDEX (media_type),"
+            "   CONSTRAINT user_tg_id FOREIGN KEY (user_tg_id)"
+            "   REFERENCES users(telegram_id) ON DELETE CASCADE"
+            ")"
+        )
+
+        return True
+
