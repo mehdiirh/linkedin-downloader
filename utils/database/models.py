@@ -3,11 +3,9 @@ from utils.tools import now
 from mysql.connector import connect
 from mysql.connector import errors
 
-from pathlib import Path
-import json
+import settings
 
-config_path = Path(__file__).resolve().parent.parent.parent / 'config.json'
-config = json.load(open(config_path, 'r'))["DB"]
+config = settings.DATABASE
 config = {
     'user': config["USER"],
     'password': config["PASS"],

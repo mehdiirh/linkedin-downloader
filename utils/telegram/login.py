@@ -1,12 +1,10 @@
 from telethon.sync import TelegramClient
 from telethon.sessions import MemorySession
 
-from pathlib import Path
-import json
+import settings
 
-config_path = Path(__file__).resolve().parent.parent.parent / 'config.json'
-config = json.load(open(config_path, 'r'))["TG"]
 
+config = settings.TELEGRAM
 api_id = config["API_ID"]
 api_hash = config["API_HASH"]
 TOKEN = config["TOKEN"]

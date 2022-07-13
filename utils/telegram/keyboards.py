@@ -1,11 +1,9 @@
 from telethon import Button
 from utils.telegram.tools import Text
 
-from pathlib import Path
-import json
+import settings
 
-config_path = Path(__file__).resolve().parent.parent.parent / 'config.json'
-linkedin_url = json.load(open(config_path, 'r'))["LINKEDIN"]["URL"]
+linkedin_url = settings.LINKEDIN["URL"]
 
 _i = Button.inline
 _t = Button.text
