@@ -7,7 +7,7 @@ class User(Model):
 
     def _create_table(self):
         self.database.execute(
-            f"CREATE TABLE {self.table_name}"
+            f"CREATE TABLE IF NOT EXISTS {self.table_name}"
             "("
             "   id BIGINT AUTO_INCREMENT PRIMARY KEY,"
             "   telegram_id INT(16) NOT NULL,"
