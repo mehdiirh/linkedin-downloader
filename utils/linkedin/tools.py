@@ -1,7 +1,7 @@
 from linkedin_api import Linkedin
 from telethon.sync import TelegramClient
 
-from utils.database.models import User, Media, DownloadRequests
+from utils.database.models import User, Media, DownloadRequest
 from utils.database.redis import Redis
 from utils.event_objects import EventDetails, Invite
 from utils.telegram.texts import LinkedinLinked, MediaCaption
@@ -35,7 +35,7 @@ async def extract_media(bot: TelegramClient, event: EventDetails):
                                                   f"\n-------------\n\n"
                                                   f"{event.text[:4000]} \n\n 👇👇👇👇")
 
-    with DownloadRequests() as dnr_db:
+    with DownloadRequest() as dnr_db:
         dnr_id = dnr_db.create(user_tg_id=telegram_id)
 
     media_db = Media()

@@ -62,7 +62,7 @@ class Media(Model):
         return True
 
 
-class DownloadRequests(Model):
+class DownloadRequest(Model):
 
     table_name = 'download_requests'
 
