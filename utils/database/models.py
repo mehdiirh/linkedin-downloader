@@ -52,7 +52,7 @@ class Media(Model):
             "   PRIMARY KEY (id),"
             "   INDEX (user_tg_id),"
             "   INDEX (media_type),"
-            "   CONSTRAINT user_tg_id FOREIGN KEY (user_tg_id)"
+            "   FOREIGN KEY (user_tg_id) "
             "   REFERENCES users(telegram_id) ON DELETE CASCADE"
             ")"
         )
