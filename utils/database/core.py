@@ -184,14 +184,14 @@ class Model:
 
         return True
 
-    def fetch(self, size=None, columns=None, condition='AND', **filters):
+    def fetch(self, columns=None, condition='AND', size=None, **filters):
         """
         Fetch data from database by filters and columns
 
         Args:
-            size: item count to return
             columns: columns to return
             condition: fill between filters with this phrase
+            size: item count to return
             **filters: filters to filter by
 
         Returns:
