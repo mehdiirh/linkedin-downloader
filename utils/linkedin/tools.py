@@ -1,11 +1,16 @@
-from utils.database.models import User
-from utils.database.redis import Redis
-from utils.event_objects import EventDetails
-from utils.telegram.texts import LinkedinLinked, MediaCaption
-
+from linkedin_api import Linkedin
 from telethon.sync import TelegramClient
 
+from utils.database.models import User
+from utils.database.redis import Redis
+from utils.event_objects import EventDetails, Invite
+from utils.telegram.texts import LinkedinLinked, MediaCaption
+
+import settings
+
 import re
+import asyncio
+import random
 
 
 async def extract_media(bot: TelegramClient, event: EventDetails):
@@ -76,3 +81,47 @@ async def authenticate(bot: TelegramClient, message: str, linkedin_id: str):
             lang = db.language(telegram_id)
 
         await bot.send_message(int(telegram_id), LinkedinLinked.get(lang))
+
+
+async def accept_all_invitations():
+    api = Linkedin(
+        settings.LINKEDIN['USER'],
+        settings.LINKEDIN['PASS']
+    )
+    redis = Redis()
+    invites_redis_key = 'linkedin:INV'
+
+    while True:
+
+        invite_count = 0
+        if invitations := redis.server.get(invites_redis_key):
+            invite_count = int(invitations.decode('utf8'))
+
+        if not invite_count:
+            # if no invitations exists in redis, sleep 1 minute, then check again
+            await asyncio.sleep(60)
+            continue
+
+        # reset invite counts
+        redis.server.set(invites_redis_key, 0)
+
+        while True:
+            invites = api.get_invitations(limit=10)
+
+            if not invites:
+                break  # exit if there's no more invitations
+
+            for invite in invites:
+                invite = Invite.from_dict(invite)
+
+                if invite.invitation_type != 'PENDING':
+                    continue
+
+                api.reply_invitation(invite.entity_urn, invite.shared_secret, action='accept')
+
+                # sleep 3 to 10 seconds between each invite accept
+                await asyncio.sleep(
+                    random.randint(3, 10)
+                )
+
+        await asyncio.sleep(15 * 60)  # sleep 15 minutes after accepting invitations
