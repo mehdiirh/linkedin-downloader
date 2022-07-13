@@ -5,7 +5,7 @@ class User(Model):
 
     table_name = 'users'
 
-    def __create_table(self):
+    def _create_table(self):
         self.database.execute(
             f"CREATE TABLE {self.table_name}"
             "("
