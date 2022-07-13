@@ -147,8 +147,8 @@ class Model:
     table_name: str = ""
 
     def __init__(self):
-        self.__create_table()
         self.database = Database().open()
+        self._create_table()
 
     def __create_table(self):
         """
