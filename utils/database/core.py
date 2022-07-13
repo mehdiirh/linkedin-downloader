@@ -73,8 +73,14 @@ class Database:
         cursor.execute(operation, params=params)
         if commit:
             self.connection.commit()
+
+        # return last row inserted into database
+        last_row_id = None
+        if operation.upper().startswith('INSERT INTO'):
+            last_row_id = cursor.lastrowid
+
         cursor.close()
-        return True
+        return last_row_id or True
 
     def fetch(self, operation: str, size: int = None):
         """
@@ -164,7 +170,7 @@ class Model:
             **kwargs: key,values to insert
 
         Returns:
-            bool: True
+            int: inserted row id
         """
 
         if not kwargs:
@@ -173,7 +179,7 @@ class Model:
         length = ', '.join(['%s'] * len(kwargs))
         keys = ', '.join(kwargs.keys())
 
-        self.database.execute(
+        return self.database.execute(
             f"INSERT INTO {self.table_name} "
             f"({keys}) VALUES "
             f"({length})",
@@ -181,8 +187,6 @@ class Model:
             params=tuple(kwargs.values()),
             commit=True
         )
-
-        return True
 
     def fetch(self, columns=None, condition='AND', size=None, **filters):
         """
