@@ -234,7 +234,6 @@ class Model:
         )
 
     def __enter__(self):
-        self._create_table()
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
