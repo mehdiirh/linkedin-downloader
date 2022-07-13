@@ -70,7 +70,7 @@ class DownloadRequests(Model):
         self.database.execute(
             f"CREATE TABLE IF NOT EXISTS {self.table_name} "
             f"("
-            f"  id INT NOT NULL AUTO_INCREMENT,"
+            f"  id BIGINT NOT NULL AUTO_INCREMENT,"
             f"  user_tg_id INT(16) NOT NULL,"
             f"  create_time DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,"
             f"  PRIMARY KEY (id),"
