@@ -2,6 +2,7 @@ from linkedin_messaging.api_objects import RealTimeEventStreamEvent
 
 from telethon.sync import TelegramClient
 
+from utils.database.redis import Redis
 from utils.event_objects import EventDetails, TabBadges
 from utils.linkedin.tools import authenticate, extract_media
 
@@ -65,3 +66,23 @@ async def handle_message_events(event: RealTimeEventStreamEvent, bot: TelegramCl
             media['documents'].append(document.document.transcribed_document_url)
 
         await extract_media(bot, EventDetails.from_dict(event_details))
+
+
+async def handle_badge_events(event: TabBadges):
+
+    redis = Redis()
+
+    for badge in event.tab_badges:
+
+        if badge.count == 0:
+            continue
+
+        if badge.tab == 'MY_NETWORK':
+            redis.server.set('linkedin:INV', badge.count)
+
+        if badge.tab == 'NOTIFICATIONS':
+            pass
+
+        if badge.tab == 'MESSAGING':
+            pass
+
