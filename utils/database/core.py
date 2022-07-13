@@ -150,11 +150,11 @@ class Model:
         self.database = Database().open()
         self._create_table()
 
-    def __create_table(self):
+    def _create_table(self):
         """
         Create table if it doesn't exist
         """
-        raise NotImplementedError("__create_table method is not implemented")
+        raise NotImplementedError("_create_table method is not implemented")
 
     def create(self, **kwargs):
         """
