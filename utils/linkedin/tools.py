@@ -1,7 +1,7 @@
 from linkedin_api import Linkedin
 from telethon.sync import TelegramClient
 
-from utils.database.models import User
+from utils.database.models import User, Media, DownloadRequests
 from utils.database.redis import Redis
 from utils.event_objects import EventDetails, Invite
 from utils.telegram.texts import LinkedinLinked, MediaCaption
@@ -35,14 +35,24 @@ async def extract_media(bot: TelegramClient, event: EventDetails):
                                                   f"\n-------------\n\n"
                                                   f"{event.text[:4000]} \n\n 👇👇👇👇")
 
+    with DownloadRequests() as dnr_db:
+        dnr_id = dnr_db.create(user_tg_id=telegram_id)
+
+    media_db = Media()
+
     if images := event.media.images:
+        media_db.create(dnr=dnr_id, user_tg_id=telegram_id, media_type='image', media_count=len(images))
         [await bot.send_file(telegram_id, i, caption=caption, reply_to=message) for i in images]
 
     if videos := event.media.videos:
+        media_db.create(dnr=dnr_id, user_tg_id=telegram_id, media_type='video', media_count=len(videos))
         [await bot.send_file(telegram_id, i.url, caption=caption, reply_to=message) for i in videos]
 
     if documents := event.media.documents:
+        media_db.create(dnr=dnr_id, user_tg_id=telegram_id, media_type='document', media_count=len(documents))
         [await bot.send_file(telegram_id, i, caption=caption, reply_to=message) for i in documents]
+
+    media_db.database.close()
 
 
 async def authenticate(bot: TelegramClient, message: str, linkedin_id: str):
