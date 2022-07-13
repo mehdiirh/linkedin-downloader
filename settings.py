@@ -1,17 +1,17 @@
-{
-  "DB": {
+DATABASE = {
     "USER": "",
     "PASS": "",
     "HOST": ""
-  },
-  "LINKEDIN": {
+}
+
+LINKEDIN = {
     "USER": "",
     "PASS": "",
     "URL":  ""
-  },
-  "TG": {
+}
+
+TELEGRAM = {
     "API_ID": 0,
     "API_HASH": "",
     "TOKEN": ""
-  }
 }
