@@ -2,16 +2,18 @@ from linkedin_messaging import ChallengeException, LinkedInMessaging
 from linkedin_messaging.api_objects import RealTimeEventStreamEvent
 
 from utils.linkedin import event_handlers
+from utils.linkedin.tools import accept_all_invitations
+from utils.event_objects import TabBadges
+
+import settings
 
 from pathlib import Path
 import asyncio
 import logging
-import json
 
 cookie_path = Path(__file__).parent.joinpath("cookies.pickle")
-config_path = Path(__file__).resolve().parent.parent.parent / 'config.json'
 
-config = json.load(open(config_path, 'r'))["LINKEDIN"]
+config = settings.LINKEDIN
 username = config["USER"]
 password = config["PASS"]
 
@@ -44,13 +46,24 @@ async def start(bot):
         with open(cookie_path, "wb+") as cf:
             cf.write(messaging.to_pickle())
 
+    async def all_events(event: dict):
+        event_payload = event.get("com.linkedin.realtimefrontend.DecoratedEvent", {}).get(
+            "payload", {}
+        )
+
+        if event_payload.get("tabBadges") is not None:
+            await event_handlers.handle_badge_events(TabBadges.from_dict(event_payload))
+
     async def on_event(event: RealTimeEventStreamEvent):
         await event_handlers.handle_message_events(event, bot)
 
     messaging.add_event_listener("event", on_event)
-    task = asyncio.create_task(messaging.start_listener())
+    messaging.add_event_listener("ALL_EVENTS", all_events)
+
+    listener_task = asyncio.create_task(messaging.start_listener())
+    invite_acceptor_task = asyncio.create_task(accept_all_invitations())
 
     # wait basically forever
     await asyncio.sleep(2 ** 128)
-    await asyncio.gather(task)
+    await asyncio.gather(listener_task, invite_acceptor_task)
     await messaging.close()
