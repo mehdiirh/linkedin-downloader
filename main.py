@@ -44,7 +44,7 @@ async def validate_user(message: Message):
             db.update({'last_activity': now()}, {'telegram_id': sender_id})
 
         else:
-            db.create(sender_id)
+            db.create(telegram_id=sender_id)
 
 
 @bot.on(events.NewMessage(incoming=True, pattern=r'^/language$'))
