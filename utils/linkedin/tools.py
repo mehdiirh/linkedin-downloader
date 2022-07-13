@@ -5,6 +5,8 @@ from utils.telegram.texts import LinkedinLinked, MediaCaption
 
 from telethon.sync import TelegramClient
 
+import re
+
 
 async def extract_media(bot: TelegramClient, event: EventDetails):
     """
@@ -38,17 +40,20 @@ async def extract_media(bot: TelegramClient, event: EventDetails):
         [await bot.send_file(telegram_id, i, caption=caption, reply_to=message) for i in documents]
 
 
-async def authenticate(bot: TelegramClient, code: str, linkedin_id: str):
+async def authenticate(bot: TelegramClient, message: str, linkedin_id: str):
     """
     Authenticate the user with the given linkedin_id and code and sync it with their telegram account
 
     Args:
         bot (TelegramClient): Telegram client
-        code (str): Code received from the user
+        message (str): Message received from the user
         linkedin_id (str): LinkedIn ID of the user
     """
 
-    telegram_id, code = code.split(':')
+    if not re.match(r'^\d+:\w+$', message):
+        return
+
+    telegram_id, code = message.split(':')
 
     with User() as db:
         if user := db.fetch(columns='linkedin_id', telegram_id=telegram_id, size=1):

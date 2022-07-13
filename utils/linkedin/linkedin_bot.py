@@ -8,7 +8,6 @@ from utils.event_objects import EventDetails
 from pathlib import Path
 import asyncio
 import logging
-import re
 import json
 
 cookie_path = Path(__file__).parent.joinpath("cookies.pickle")
@@ -47,10 +46,6 @@ async def listen(bot):
         with open(cookie_path, "wb+") as cf:
             cf.write(messaging.to_pickle())
 
-    async def auth(code, linkedin_id):
-        if re.match(r'^\d+:\w+$', code):
-            await authenticate(bot, code, linkedin_id)
-
     async def on_event(event: RealTimeEventStreamEvent):
 
         media = {
@@ -73,7 +68,7 @@ async def listen(bot):
                 return
 
             if message := me.attributed_body.text:
-                await auth(message, uid)
+                await authenticate(bot, message, uid)
 
             if not (fu := me.feed_update) or not (content := fu.content):
                 return
