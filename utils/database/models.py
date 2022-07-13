@@ -59,3 +59,21 @@ class Media(Model):
 
         return True
 
+
+class DownloadRequests(Model):
+
+    table_name = 'download_requests'
+
+    def _create_table(self):
+        self.database.execute(
+            f"CREATE TABLE IF NOT EXISTS {self.table_name} "
+            f"("
+            f"  id INT NOT NULL AUTO_INCREMENT,"
+            f"  user_tg_id INT(16) NOT NULL,"
+            f"  create_time DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,"
+            f"  PRIMARY KEY (id),"
+            f"  INDEX (user_tg_id),"
+            f"  FOREIGN KEY (user_tg_id) "
+            f"  REFERENCES users(telegram_id) ON DELETE CASCADE"
+            f")"
+        )
