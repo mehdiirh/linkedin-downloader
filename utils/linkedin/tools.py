@@ -84,6 +84,8 @@ async def authenticate(bot: TelegramClient, message: str, linkedin_id: str):
 
 
 async def accept_all_invitations():
+    print('Invite acceptor started')
+
     api = Linkedin(
         settings.LINKEDIN['USER'],
         settings.LINKEDIN['PASS']
