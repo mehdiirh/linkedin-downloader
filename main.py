@@ -135,4 +135,4 @@ async def callback_handler(call: CallbackQuery):
 
 
 # run the LinkedIn bot
-bot.loop.run_until_complete(linkedin_bot.listen(bot))
+bot.loop.run_until_complete(linkedin_bot.start(bot))

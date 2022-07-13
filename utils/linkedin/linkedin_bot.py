@@ -19,7 +19,7 @@ logging.basicConfig()
 logging.getLogger().setLevel(logging.WARNING)
 
 
-async def listen(bot):
+async def start(bot):
     """
     Listen to events from the LinkedIn direct messages
 
