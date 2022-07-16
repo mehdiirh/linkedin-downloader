@@ -1,5 +1,6 @@
 from linkedin_api import Linkedin
 from telethon.sync import TelegramClient
+from telethon import errors
 
 from utils.database.models import User, Media, DownloadRequest
 from utils.database.redis import Redis
@@ -60,9 +61,12 @@ async def extract_media(bot: TelegramClient, event: EventDetails):
 
     caption = MediaCaption.get(lang).replace('%author%', event.author)
 
-    message = await bot.send_message(telegram_id, f"{caption}"
-                                                  f"\n-------------\n\n"
-                                                  f"{event.text[:4000]} \n\n 👇👇👇👇")
+    try:
+        message = await bot.send_message(telegram_id, f"{caption}"
+                                                      f"\n-------------\n\n"
+                                                      f"{event.text[:4000]} \n\n 👇👇👇👇")
+    except errors.UserBlockedError:
+        return
 
     with DownloadRequest() as dnr_db:
         dnr_id = dnr_db.create(user_tg_id=telegram_id)
