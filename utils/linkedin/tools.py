@@ -34,7 +34,8 @@ async def send_media(
 
     if error:
         try:
-            await bot.send_message(entity, MediaIsNotDownloadable.get(language), reply_to=reply_to)
+            text = MediaIsNotDownloadable.get(language).replace('%link%', file_url)
+            await bot.send_message(entity, text, reply_to=reply_to)
         except Exception as e:
             error_type = repr(e)
 
