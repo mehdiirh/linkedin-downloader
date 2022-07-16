@@ -75,7 +75,7 @@ async def extract_media(bot: TelegramClient, event: EventDetails):
             media_db.create(
                 dnr=dnr_id, user_tg_id=telegram_id,
                 media_type='image', media_count=len(images),
-                error=error, error_type=error_type
+                error_on_send=error, error_type=error_type
             )
 
     if videos := event.media.videos:
@@ -84,7 +84,7 @@ async def extract_media(bot: TelegramClient, event: EventDetails):
             media_db.create(
                 dnr=dnr_id, user_tg_id=telegram_id,
                 media_type='video', media_count=len(videos),
-                error=error, error_type=error_type
+                error_on_send=error, error_type=error_type
             )
 
     if documents := event.media.documents:
@@ -93,7 +93,7 @@ async def extract_media(bot: TelegramClient, event: EventDetails):
             media_db.create(
                 dnr=dnr_id, user_tg_id=telegram_id,
                 media_type='document', media_count=len(documents),
-                error=error, error_type=error_type
+                error_on_send=error, error_type=error_type
             )
 
     media_db.database.close()
