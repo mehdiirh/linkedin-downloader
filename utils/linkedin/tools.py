@@ -65,7 +65,7 @@ async def extract_media(bot: TelegramClient, event: EventDetails):
         message = await bot.send_message(telegram_id, f"{caption}"
                                                       f"\n-------------\n\n"
                                                       f"{event.text[:4000]} \n\n 👇👇👇👇")
-    except errors.UserBlockedError:
+    except errors.UserIsBlockedError:
         return
 
     with DownloadRequest() as dnr_db:
