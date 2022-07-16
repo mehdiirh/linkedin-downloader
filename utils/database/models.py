@@ -49,6 +49,8 @@ class Media(Model):
             "   user_tg_id INT(16) NOT NULL,"
             "   media_type VARCHAR(16) NOT NULL,"
             "   media_count INT NOT NULL,"
+            "   link TEXT NULL,"
+            "   error_on_send BOOL NOT NULL DEFAULT FALSE,"            
             "   create_time DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,"
             "   PRIMARY KEY (id),"
             "   INDEX (dnr),"
