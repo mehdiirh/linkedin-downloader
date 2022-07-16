@@ -54,3 +54,14 @@ class MediaCaption(Text):
 
     en = "📥 Author: %author%"
     fa = "📥 دریافت شده از: %author%"
+
+
+class MediaIsNotDownloadable(Text):
+
+    en = ("🛑 Uploading media in telegram failed, here is the link to your requested media:\n\n"
+          "%link%\n\n "
+          "You can download it directly")
+
+    fa = ("🛑 آپلود فایل در تلگرام ناموفق بود، این لینک فایل درخواستی شما است:\n\n"
+          "%link%\n\n"
+          "می توانید آن را مستقیما دانلود کنید")

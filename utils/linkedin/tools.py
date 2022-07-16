@@ -4,13 +4,41 @@ from telethon.sync import TelegramClient
 from utils.database.models import User, Media, DownloadRequest
 from utils.database.redis import Redis
 from utils.event_objects import EventDetails, Invite
-from utils.telegram.texts import LinkedinLinked, MediaCaption
+from utils.telegram.texts import LinkedinLinked, MediaCaption, MediaIsNotDownloadable
+from utils.telegram.types import Message
 
 import settings
 
 import re
 import asyncio
 import random
+
+
+async def send_media(
+        bot: TelegramClient,
+        entity: [int, str],
+        text: str,
+        language: str,
+        reply_to: Message,
+        file_url: str
+):
+
+    error = False
+    error_type = None
+
+    try:
+        await bot.send_file(entity, file_url, caption=text, reply_to=reply_to)
+    except Exception as e:
+        error = True
+        error_type = repr(e)
+
+    if error:
+        try:
+            await bot.send_message(entity, MediaIsNotDownloadable.get(language), reply_to=reply_to)
+        except Exception as e:
+            error_type = repr(e)
+
+    return error, error_type
 
 
 async def extract_media(bot: TelegramClient, event: EventDetails):
@@ -41,16 +69,31 @@ async def extract_media(bot: TelegramClient, event: EventDetails):
     media_db = Media()
 
     if images := event.media.images:
-        media_db.create(dnr=dnr_id, user_tg_id=telegram_id, media_type='image', media_count=len(images))
-        [await bot.send_file(telegram_id, i, caption=caption, reply_to=message) for i in images]
+        for image in images:
+            error, error_type = await send_media(bot, telegram_id, caption, lang, message, image)
+            media_db.create(
+                dnr=dnr_id, user_tg_id=telegram_id,
+                media_type='image', media_count=len(images),
+                error=error, error_type=error_type
+            )
 
     if videos := event.media.videos:
-        media_db.create(dnr=dnr_id, user_tg_id=telegram_id, media_type='video', media_count=len(videos))
-        [await bot.send_file(telegram_id, i.url, caption=caption, reply_to=message) for i in videos]
+        for video in videos:
+            error, error_type = await send_media(bot, telegram_id, caption, lang, message, video.url)
+            media_db.create(
+                dnr=dnr_id, user_tg_id=telegram_id,
+                media_type='video', media_count=len(videos),
+                error=error, error_type=error_type
+            )
 
     if documents := event.media.documents:
-        media_db.create(dnr=dnr_id, user_tg_id=telegram_id, media_type='document', media_count=len(documents))
-        [await bot.send_file(telegram_id, i, caption=caption, reply_to=message) for i in documents]
+        for document in documents:
+            error, error_type = await send_media(bot, telegram_id, caption, lang, message, document)
+            media_db.create(
+                dnr=dnr_id, user_tg_id=telegram_id,
+                media_type='document', media_count=len(documents),
+                error=error, error_type=error_type
+            )
 
     media_db.database.close()
 
