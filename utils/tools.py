@@ -26,6 +26,6 @@ def generate_unique_id(length: int = 32) -> str:
 
     while True:
         token = [random.choice(string.hexdigits) for _ in range(length)]
-        token = ''.join(token)
+        token = "".join(token)
         token = token.lower()
         return token

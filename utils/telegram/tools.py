@@ -1,8 +1,7 @@
-
 class Text:
 
-    en = ''
-    fa = ''
+    en = ""
+    fa = ""
 
     @classmethod
     def get(cls, lang: str) -> str:

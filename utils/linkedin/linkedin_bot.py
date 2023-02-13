@@ -29,7 +29,7 @@ async def start(bot):
         bot (telethon.TelegramClient): Telegram client
     """
 
-    print('Start listening to linkedin messages...')
+    print("Start listening to linkedin messages...")
 
     messaging = LinkedInMessaging()
 
@@ -47,9 +47,9 @@ async def start(bot):
             cf.write(messaging.to_pickle())
 
     async def all_events(event: dict):
-        event_payload = event.get("com.linkedin.realtimefrontend.DecoratedEvent", {}).get(
-            "payload", {}
-        )
+        event_payload = event.get(
+            "com.linkedin.realtimefrontend.DecoratedEvent", {}
+        ).get("payload", {})
 
         if event_payload.get("tabBadges") is not None:
             await event_handlers.handle_badge_events(TabBadges.from_dict(event_payload))
@@ -64,6 +64,6 @@ async def start(bot):
     invite_acceptor_task = asyncio.create_task(accept_all_invitations())
 
     # wait basically forever
-    await asyncio.sleep(2 ** 128)
+    await asyncio.sleep(2**128)
     await asyncio.gather(listener_task, invite_acceptor_task)
     await messaging.close()

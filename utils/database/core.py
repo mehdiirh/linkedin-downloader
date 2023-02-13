@@ -4,16 +4,12 @@ from mysql.connector import errors
 import settings
 
 config = settings.DATABASE
-config = {
-    'user': config["USER"],
-    'password': config["PASS"],
-    'host': config["HOST"]
-}
+config = {"user": config["USER"], "password": config["PASS"], "host": config["HOST"]}
 
 
 class Database:
 
-    DB_NAME = 'linkedinDownloader'
+    DB_NAME = "linkedinDownloader"
     connection = None
     cursor = None
 
@@ -27,10 +23,7 @@ class Database:
 
         for _ in range(3):
             try:
-                self.connection = connect(
-                    database=self.DB_NAME,
-                    **config
-                )
+                self.connection = connect(database=self.DB_NAME, **config)
                 return self
             except errors.ProgrammingError:
                 self.create_db()
@@ -52,7 +45,9 @@ class Database:
 
         database = connect(**config)
         cursor = database.cursor()
-        cursor.execute(f"CREATE DATABASE IF NOT EXISTS {self.DB_NAME} DEFAULT CHARACTER SET 'utf8'")
+        cursor.execute(
+            f"CREATE DATABASE IF NOT EXISTS {self.DB_NAME} DEFAULT CHARACTER SET 'utf8'"
+        )
         cursor.close()
         database.close()
 
@@ -76,7 +71,7 @@ class Database:
 
         # return last row inserted into database
         last_row_id = None
-        if operation.upper().startswith('INSERT INTO'):
+        if operation.upper().startswith("INSERT INTO"):
             last_row_id = cursor.lastrowid
 
         cursor.close()
@@ -108,7 +103,7 @@ class Database:
         return result
 
     @staticmethod
-    def create_filters(condition='AND', **filters):
+    def create_filters(condition="AND", **filters):
         """
         Create filters from dict
 
@@ -124,28 +119,28 @@ class Database:
         for key, value in filters.items():
 
             if value is None:
-                value = 'NULL'
+                value = "NULL"
 
             if isinstance(value, (list, tuple)):
-                value = list(map(lambda x: 'NULL' if x is None else x, value))
+                value = list(map(lambda x: "NULL" if x is None else x, value))
 
-            if str(key).endswith('__in'):
-                key = str(key).replace('__in', '')
+            if str(key).endswith("__in"):
+                key = str(key).replace("__in", "")
                 value = tuple(value)
-                _filters.append(f'{key} IN {value}')
+                _filters.append(f"{key} IN {value}")
                 continue
 
-            if str(key).endswith('__contains'):
-                key = str(key).replace('__contains', '')
+            if str(key).endswith("__contains"):
+                key = str(key).replace("__contains", "")
                 _filters.append(f'{key} LIKE "%{value}%"')
                 continue
 
-            if value == 'NULL':
-                _filters.append(f'{key}=NULL')
+            if value == "NULL":
+                _filters.append(f"{key}=NULL")
             else:
                 _filters.append(f'{key}="{value}"')
 
-        return f' {condition} '.join(_filters)
+        return f" {condition} ".join(_filters)
 
 
 class Model:
@@ -176,19 +171,16 @@ class Model:
         if not kwargs:
             raise ValueError("specify keys and values")
 
-        length = ', '.join(['%s'] * len(kwargs))
-        keys = ', '.join(kwargs.keys())
+        length = ", ".join(["%s"] * len(kwargs))
+        keys = ", ".join(kwargs.keys())
 
         return self.database.execute(
-            f"INSERT INTO {self.table_name} "
-            f"({keys}) VALUES "
-            f"({length})",
-
+            f"INSERT INTO {self.table_name} " f"({keys}) VALUES " f"({length})",
             params=tuple(kwargs.values()),
-            commit=True
+            commit=True,
         )
 
-    def fetch(self, columns=None, condition='AND', size=None, **filters):
+    def fetch(self, columns=None, condition="AND", size=None, **filters):
         """
         Fetch data from database by filters and columns
 
@@ -203,10 +195,10 @@ class Model:
         """
 
         if columns is None:
-            columns = '*'
+            columns = "*"
 
         if isinstance(columns, (list, tuple)):
-            columns = ', '.join(columns)
+            columns = ", ".join(columns)
 
         filters = self.database.create_filters(condition, **filters)
 
@@ -216,7 +208,7 @@ class Model:
 
         return self.database.fetch(query, size=size)
 
-    def update(self, values: dict, filters: dict, filter_condition='AND'):
+    def update(self, values: dict, filters: dict, filter_condition="AND"):
         """
         Update data in database
 
@@ -229,12 +221,11 @@ class Model:
             (bool): True
         """
 
-        values = self.database.create_filters(condition=',', **values)
+        values = self.database.create_filters(condition=",", **values)
         filters = self.database.create_filters(condition=filter_condition, **filters)
 
         return self.database.execute(
-            f"UPDATE {self.table_name} SET {values} WHERE {filters}",
-            commit=True
+            f"UPDATE {self.table_name} SET {values} WHERE {filters}", commit=True
         )
 
     def __enter__(self):

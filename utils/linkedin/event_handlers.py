@@ -9,16 +9,11 @@ from utils.linkedin.tools import authenticate, extract_media
 
 async def handle_message_events(event: RealTimeEventStreamEvent, bot: TelegramClient):
     media = {
-        'images': [],
-        'videos': [],
-        'documents': [],
+        "images": [],
+        "videos": [],
+        "documents": [],
     }
-    event_details = {
-        'text': '',
-        'sender': '',
-        'author': '',
-        'media': media
-    }
+    event_details = {"text": "", "sender": "", "author": "", "media": media}
 
     if (e := event.event) and (ec := e.event_content):
 
@@ -33,37 +28,39 @@ async def handle_message_events(event: RealTimeEventStreamEvent, bot: TelegramCl
         if not (fu := me.feed_update) or not (content := fu.content):
             return
 
-        event_details['author'] = fu.actor.name.text
+        event_details["author"] = fu.actor.name.text
 
-        event_details['sender'] = e.from_.messaging_member.mini_profile.entity_urn.id_parts[0]
+        event_details[
+            "sender"
+        ] = e.from_.messaging_member.mini_profile.entity_urn.id_parts[0]
 
         if fu.commentary and fu.commentary.text:
-            event_details['text'] = fu.commentary.text.text
+            event_details["text"] = fu.commentary.text.text
 
-        if (im_component := content.image_component) and (images := im_component.images):
+        if (im_component := content.image_component) and (
+            images := im_component.images
+        ):
             for im in images:
                 for attr in im.attributes:
-                    artifact = max(
-                        attr.vector_image.artifacts,
-                        key=lambda x: x.width
-                    )
-                    media['images'].append(
-                        attr.vector_image.root_url + artifact.file_identifying_url_path_segment
+                    artifact = max(attr.vector_image.artifacts, key=lambda x: x.width)
+                    media["images"].append(
+                        attr.vector_image.root_url
+                        + artifact.file_identifying_url_path_segment
                     )
 
-        if (video_component := content.video_component) and \
-                (videos := video_component.video_play_metadata.progressive_streams):
-            best_resolution = max(
-                videos,
-                key=lambda x: x.size
+        if (video_component := content.video_component) and (
+            videos := video_component.video_play_metadata.progressive_streams
+        ):
+            best_resolution = max(videos, key=lambda x: x.size)
+            media["videos"].append(
+                {
+                    "url": best_resolution.streaming_locations[0].url,
+                    "format": best_resolution.media_type,
+                }
             )
-            media['videos'].append({
-                'url': best_resolution.streaming_locations[0].url,
-                'format': best_resolution.media_type
-            })
 
         if document := content.document_component:
-            media['documents'].append(document.document.transcribed_document_url)
+            media["documents"].append(document.document.transcribed_document_url)
 
         await extract_media(bot, EventDetails.from_dict(event_details))
 
@@ -77,12 +74,11 @@ async def handle_badge_events(event: TabBadges):
         if badge.count == 0:
             continue
 
-        if badge.tab == 'MY_NETWORK':
-            redis.server.set('linkedin:INV', badge.count)
+        if badge.tab == "MY_NETWORK":
+            redis.server.set("linkedin:INV", badge.count)
 
-        if badge.tab == 'NOTIFICATIONS':
+        if badge.tab == "NOTIFICATIONS":
             pass
 
-        if badge.tab == 'MESSAGING':
+        if badge.tab == "MESSAGING":
             pass
-

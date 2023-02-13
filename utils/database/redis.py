@@ -4,7 +4,7 @@ import json
 
 class Redis:
 
-    server = redis.Redis(host='127.0.0.1', port=6379, db=0)
+    server = redis.Redis(host="127.0.0.1", port=6379, db=0)
 
     def hsetex(self, name, key, value, ex=None):
         """

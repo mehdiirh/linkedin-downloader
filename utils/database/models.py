@@ -3,7 +3,7 @@ from utils.database.core import Model
 
 class User(Model):
 
-    table_name = 'users'
+    table_name = "users"
 
     def _create_table(self):
         self.database.execute(
@@ -31,14 +31,14 @@ class User(Model):
             (str): user language code or None if not selected
         """
 
-        lang = self.fetch(columns='language', telegram_id=telegram_id, size=1)
+        lang = self.fetch(columns="language", telegram_id=telegram_id, size=1)
         if lang:
             return lang[0]
 
 
 class Media(Model):
 
-    table_name = 'media'
+    table_name = "media"
 
     def _create_table(self):
         self.database.execute(
@@ -51,7 +51,7 @@ class Media(Model):
             "   media_count INT NOT NULL,"
             "   link TEXT NULL,"
             "   error_on_send BOOL NOT NULL DEFAULT FALSE,"
-            "   error_type VARCHAR(128) NULL,"            
+            "   error_type VARCHAR(128) NULL,"
             "   create_time DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,"
             "   PRIMARY KEY (id),"
             "   INDEX (dnr),"
@@ -67,7 +67,7 @@ class Media(Model):
 
 class DownloadRequest(Model):
 
-    table_name = 'download_requests'
+    table_name = "download_requests"
 
     def _create_table(self):
         self.database.execute(
