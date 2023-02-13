@@ -16,3 +16,17 @@
   </a>
 </div>
 
+<hr>
+
+## # Install With Docker
+Soon...
+
+## # Manual Install
+Soon...
+
+## # Add A New Language
+To add a new language to bot, edit [texts.py](utils/telegram/texts.py) and add your new language
+texts using its ISO formatted name like "en" or "fa".
+
+Then edit [keyboards.py](utils/telegram/keyboards.py) and add new language buttons in SET_LANG and SET_LANG_CONVERSATION
+buttons. also don't forget to edit their data ( `set_lang::en`, `set_lang_conv::en` ) and replace `en` with the language ISO.
