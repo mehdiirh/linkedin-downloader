@@ -22,7 +22,45 @@
 Soon...
 
 ## # Manual Install
-Soon...
+
+You need `mysql` installed and running on your machine. 
+
+#### - Create a python virtual environment ( `venv` ) and activate it
+```bash
+python3 -m venv venv
+source venv/bin/activate
+```
+#### - Install requirements
+```bash
+pip install -r requirement.txt
+```
+
+#### - Create a copy of settings.py.sample
+```bash
+cp settings.py.sample settings.py
+```
+
+#### - Edit `settings.py` and fill up the required information ( you can find the help table of `settings.py` below )
+#### - Run the app
+```bash
+python3 main.py
+```
+
+## # Help table of `settings.py`
+
+| Key            | Description                                                                                      |
+|----------------|--------------------------------------------------------------------------------------------------|
+| **# DATABASE** |                                                                                                  |
+| USER           | MySQL database username                                                                          |
+| PASS           | MySQL database password                                                                          |
+| HOST           | MySQL database host                                                                              |
+| **# LINKEDIN** |                                                                                                  |
+| USER           | LinkedIn account username                                                                        |
+| PASS           | LinkedIn account password                                                                        |
+| **# TELEGRAM** | ( [How to get a Telegram API_ID and API_HASH?](https://core.telegram.org/api/obtaining_api_id) ) |
+| API_ID         | Telegram api id                                                                                  |
+| API_HASH       | Telegram api id                                                                                  |
+| TOKEN          | Telegram bot token                                                                               |
 
 ## # Add A New Language
 To add a new language to bot, edit [texts.py](utils/telegram/texts.py) and add your new language
