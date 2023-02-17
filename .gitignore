@@ -3,4 +3,4 @@ test.py
 .idea
 *.pyc
 cookies.pickle
-
+settings.py
