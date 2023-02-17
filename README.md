@@ -43,7 +43,7 @@ cp settings.py.sample settings.py
 #### - Edit `settings.py` and fill up the required information ( you can find the help table of `settings.py` below )
 #### - Run the app
 ```bash
-python3 main.py
+python main.py
 ```
 
 ## # Help table of `settings.py`
