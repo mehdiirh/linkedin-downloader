@@ -1,17 +1,16 @@
 DATABASE = {
     "USER": "",
     "PASS": "",
-    "HOST": ""
+    "HOST": "",
 }
 
 LINKEDIN = {
     "USER": "",
     "PASS": "",
-    "URL":  ""
 }
 
 TELEGRAM = {
     "API_ID": 0,
     "API_HASH": "",
-    "TOKEN": ""
+    "TOKEN": "",
 }
